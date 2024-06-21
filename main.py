@@ -77,6 +77,8 @@ def generate_lotto_number():
             next_col = lotto_columns[i + 1]
             transition_counts[next_col][row[current_col]][row[next_col]] += 1
 
+    # print(transition_counts)
+
     lotto_numbers = []
     num1_probabilities = calculate_probabilities(num1_counts)
     num1 = np.random.choice(list(num1_probabilities.keys()), p=list(num1_probabilities.values()))
@@ -88,12 +90,20 @@ def generate_lotto_number():
         next_col = lotto_columns[i]
         next_num_probabilities = calculate_probabilities(transition_counts[next_col][prev_num])
 
+        # print(prev_num)
+        # print(next_col)
+        # print(next_num_probabilities)
+
         valid_next_nums = [num for num in next_num_probabilities.keys() if num not in used_numbers]
         if not valid_next_nums:
             break
         valid_next_probabilities = [next_num_probabilities[num] for num in valid_next_nums]
         total_prob = sum(valid_next_probabilities)
         valid_next_probabilities = [prob / total_prob for prob in valid_next_probabilities]
+
+        # print(valid_next_nums)
+        # print(total_prob)
+        # print(valid_next_probabilities)
 
         next_num = np.random.choice(valid_next_nums, p=valid_next_probabilities)
         lotto_numbers.append(next_num)
